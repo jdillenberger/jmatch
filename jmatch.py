@@ -106,7 +106,7 @@ class JSON_Pattern:
         return self._result
 
 
-if __name__ == '__main__':
+def main():
 
     parser = argparse.ArgumentParser(description='Check JSON Document for patterns')
     parser.add_argument('pattern', type=str, nargs='+',

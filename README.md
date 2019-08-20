@@ -15,11 +15,14 @@ to check your JSON files in a continuous integration pipeline.
 ## Installation
 
 ToDo: Make installation instructions
+
 ```sh
 git clone git@gitlab.rlp.net:jdillenberger/jmatch.git
-cd jmatch
-./install.py # not created yet
+./jmatch/setup.py install
 ```
+
+> The application is only tested on *Linux*, it may work on other operating
+> systems, but they are not officially supported.
 
 ## Usage
 
