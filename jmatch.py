@@ -33,7 +33,7 @@ class JSON_Pattern:
             if '_not' in pattern.keys():
                 if isinstance(pattern['_not'], dict) and len(pattern['_not']) is 1:
                     return not self.node_matches(subtree, pattern['_not'])
-                return not (subtree == pattern)
+                return not (subtree == pattern['_not'])
             # REGULAR EXPRESSIONS
             elif '_regex' in pattern.keys():
                 return re.compile(pattern['_regex']).match(str(subtree))
@@ -59,7 +59,7 @@ class JSON_Pattern:
                     element_found=[]
                     for element in tree:
                         element_found.append(self.matches(element, _pattern=child_pattern))
-                    result.append(any(element_found))
+                    results.append(any(element_found))
 
             else:
                 return True
