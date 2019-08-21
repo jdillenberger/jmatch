@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Spiderman",
+    "age": 28,
+    "secretIdentity": "John Smith",
+    "powers": [
+      "Shoot webs",
+      "Fly",
+      "Throw grenades"
+    ]
+  },
+  {
+    "name": "Iron man",
+    "age": 48,
+    "secretIdentity": "Tony Stark",
+    "powers": [
+      "Fire rockets",
+      "Damage resistance",
+      "Superhuman reflexes"
+    ],
+    "contraints": [
+      "Superpowers depend on his armor"
+    ]
+  }
+]
