@@ -149,3 +149,6 @@ def main():
 
     if error_found:
         exit(1)
+
+if __name__ == '__main__':
+    main()
