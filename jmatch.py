@@ -62,7 +62,7 @@ class JSON_Pattern:
                     results.append(any(element_found))
 
             else:
-                return True
+                results.append(True)
 
             if all(results):
                 self._result = self._result or all(results)
