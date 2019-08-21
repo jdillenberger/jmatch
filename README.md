@@ -14,7 +14,7 @@ to check your JSON files in a continuous integration pipeline.
 
 ## Installation
 
-## Install from Git in Linux
+## Install from Git on Linux
 
 Make sure, you have `git` and `python3` installed. You can install jMatch for a
 local user in a `BASH`-like shell environment as follows:
