@@ -14,11 +14,14 @@ to check your JSON files in a continuous integration pipeline.
 
 ## Installation
 
-ToDo: Make installation instructions
+## Install from Git-repository
+
+Make sure, you have `git` and `python3` installed. You can install jMatch in your
+commandline as follows:
 
 ```sh
-git clone git@gitlab.rlp.net:jdillenberger/jmatch.git
-./jmatch/setup.py install
+git clone https://gitlab.rlp.net/jdillenberger/jmatch.git jmatch/
+python3 jmatch/setup.py install
 ```
 
 > The application is only tested on *Linux*, it may work on other operating
@@ -40,9 +43,7 @@ A basic hello world example for a jMatch pattern would look like this:
 {
   "_type": "info",
   "_message": "The Document contains a 'hello world' value.",
-  "_pattern": {
-    "Hello World"
-  }
+  "_pattern": "Hello World"
 }
 ```
 
