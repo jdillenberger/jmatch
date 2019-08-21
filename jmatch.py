@@ -124,8 +124,11 @@ def main():
     # Read JSON to check
     if args.json is not None:
         json_string = sys.stdin if args.json is '-' else args.json
-    else:
+    elif args.target is not None:
         json_string = open(os.path.realpath(args.target), 'r').read()
+    else:
+        print('You need to specify a --target file or to pass --json data.')
+        exit(1)
 
     termcolor.cprint('\nAnalysis of {0}\n'.format(os.path.realpath(args.target)), attrs=['bold'])
 
