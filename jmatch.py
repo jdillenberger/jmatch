@@ -21,6 +21,8 @@ class JSON_Pattern:
 
         # DICTIONARIES
         if isinstance(subtree, dict):
+            if not isinstance(pattern, dict):
+                return False
             return set(pattern.keys()).intersection(set(subtree.keys())) == pattern.keys()
 
         # LISTS
