@@ -14,15 +14,13 @@ to check your JSON files in a continuous integration pipeline.
 
 ## Installation
 
-## Install from Git on Linux
+### Install via PIP
 
-Make sure, you have `git` and `python3` installed. You can install jMatch for a
-local user in a `BASH`-like shell environment as follows:
+Make sure, you have `python3` with `pip` installed. Use `pip` to install jMatch
+in your shell as follows:
 
 ```sh
-mkdir -p ~/.local/share
-git clone https://gitlab.rlp.net/jdillenberger/jmatch.git ~/.local/share/jmatch
-python3 ~/.local/share/jmatch/setup.py install
+pip install jmatch
 ```
 
 > The application is only tested on *Linux*, it may work on other operating
