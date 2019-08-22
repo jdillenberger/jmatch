@@ -16,12 +16,15 @@ test_jmatch_usage:
     before_script:
         - uname -a
         - python -V
-        - pip install twine virtualenv
+        - pip install virtualenv
         - virtualenv venv
         - source venv/bin/activate
+        - git clone https://github.com/bats-core/bats-core.git && ./bats-core/install.sh /usr/local
     script:
         - python setup.py install
-        - bash test.sh
+        - python jmatch.py -t examples/json/fruit2.json examples/patterns/contains_null.json
+        - python setup.py install
+        - bats test.bats
 
 deploy_pypi:
     stage: deploy
@@ -36,5 +39,5 @@ deploy_pypi:
     script:
         - python setup.py sdist bdist_wheel
         - twine check dist/*
-        - twine upload -u "$PYPI_USER" -p "$PYPI_PASS" --skip-existing --disable-progress-bar --verbose dist/*
+        - twine upload -u "$PYPI_USER" -p "$PYPI_PASS" --skip-existing --disable-progress-bar dist/*
 
