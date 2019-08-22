@@ -23,6 +23,5 @@ pypi_deploy:
     script:
         - python setup.py sdist bdist_wheel
         - twine check dist/*
-        - echo $PYPI_USER
         - twine upload -u "$PYPI_USER" -p "$PYPI_PASS" --skip-existing --disable-progress-bar --verbose dist/*
 
