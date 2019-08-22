@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
-from setuptools import setup, find_packages
+import setuptools
+import os
+import time
 
 with open('README.md', 'r') as README:
 
-    setup(
+    setuptools.setup(
         name='jMatch',
-        version='0.1',
+        version=os.environ.get('CI_COMMIT_TAG', os.environ.get('CI_COMMIT_SHORT_SHA', str(time.time()))),
         author='Jan Dillenberger',
         author_email='jdillenberger@uni-koblenz.de',
         long_description=README.read(),
         long_description_content_type='text/markdown',
         url='https://gitlab.rlp.net/jdillenberger/jmatch',
-        packages=find_packages(exclude=[]),
+        packages=setuptools.find_packages(exclude=[]),
         python_requires='>=3.*',
         classifiers=[
             "Programming Language :: Python :: 3",
