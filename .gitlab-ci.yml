@@ -3,15 +3,31 @@ image: python:latest
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-#stages:
-# - test
-# - deploy
+stages:
+ - test
+ - deploy
 
 cache:
   paths:
     - .cache/pip
 
-pypi_deploy:
+test_jmatch_usage:
+    stage: test
+    before_script:
+        - uname -a
+        - python -V
+        - pip install virtualenv
+        - virtualenv venv
+        - source venv/bin/activate
+        - git clone https://github.com/bats-core/bats-core.git && ./bats-core/install.sh /usr/local
+    script:
+        - python setup.py install
+        - python jmatch.py -t examples/json/fruit2.json examples/patterns/contains_null.json
+        - python setup.py install
+        - bats test.bats
+
+deploy_pypi:
+    stage: deploy
     only:
         - master
         - tags
@@ -23,5 +39,5 @@ pypi_deploy:
     script:
         - python setup.py sdist bdist_wheel
         - twine check dist/*
-        - twine upload -u "$PYPI_USER" -p "$PYPI_PASS" --skip-existing --disable-progress-bar --verbose dist/*
+        - twine upload -u "$PYPI_USER" -p "$PYPI_PASS" --skip-existing --disable-progress-bar dist/*
 
