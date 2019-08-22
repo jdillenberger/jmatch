@@ -7,7 +7,7 @@ import time
 with open('README.md', 'r') as README:
 
     setuptools.setup(
-        name='jMatch',
+        name='jmatch',
         version=os.environ.get('CI_COMMIT_TAG', '0.0.1'),
         author='Jan Dillenberger',
         author_email='jdillenberger@uni-koblenz.de',
