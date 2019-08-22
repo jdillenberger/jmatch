@@ -1,0 +1,25 @@
+image: python:latest
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+#stages:
+# - test
+# - deploy
+
+cache:
+  paths:
+    - .cache/pip
+
+pypi_deploy:
+    before_script:
+        - python -V
+        - pip install twine virtualenv
+        - virtualenv venv
+        - source venv/bin/activate
+    script:
+        - python setup.py sdist bdist_wheel
+        - twine check dist/*
+        - echo $PYPI_USER
+        - twine upload -u "$PYPI_USER" -p "$PYPI_PASS" --skip-existing --disable-progress-bar --verbose dist/*
+

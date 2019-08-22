@@ -8,7 +8,7 @@ with open('README.md', 'r') as README:
 
     setuptools.setup(
         name='jMatch',
-        version=os.environ.get('CI_COMMIT_TAG', os.environ.get('CI_COMMIT_SHORT_SHA', str(time.time()))),
+        version=os.environ.get('CI_COMMIT_TAG', '0.0.1'),
         author='Jan Dillenberger',
         author_email='jdillenberger@uni-koblenz.de',
         long_description=README.read(),
@@ -19,7 +19,7 @@ with open('README.md', 'r') as README:
         classifiers=[
             "Programming Language :: Python :: 3",
             "License :: OSI Approved :: MIT License",
-            "Operating System :: Linux",
+            "Operating System :: OS Independent",
         ],
         entry_points={
             'console_scripts': [
