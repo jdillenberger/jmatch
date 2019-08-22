@@ -12,6 +12,8 @@ cache:
     - .cache/pip
 
 pypi_deploy:
+    only:
+        - master
     before_script:
         - python -V
         - pip install twine virtualenv
