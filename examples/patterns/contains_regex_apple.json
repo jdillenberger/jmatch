@@ -1,0 +1,6 @@
+
+{
+  "_type": "error",
+  "_message": "The Document contains something like an 'apple' string value.",
+  "_pattern": {"_regex": "a.+le"}
+}
