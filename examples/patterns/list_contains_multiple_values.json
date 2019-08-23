@@ -1,0 +1,9 @@
+
+{
+  "_type": "error",
+  "_message": "The list contains both strings",
+  "_pattern": [
+      "Fire rockets",
+      "Damage resistance"
+  ]
+}

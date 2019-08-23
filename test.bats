@@ -1,6 +1,8 @@
 #!/usr/bin/env bats
 
+
 # Test return values for simple value patterns
+
 
 @test "Check single value null patterns" {
     # Error because the error pattern matches
@@ -52,7 +54,18 @@
     [ "$status" -eq 0 ]
 }
 
+
 # Test return values for basic dictionary type elements
+
+@test "Check empty dict" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/hero.json examples/patterns/contains_empty_dictionary.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/ingredients.json examples/patterns/contains_empty_dictionary.json
+    [ "$status" -eq 0 ]
+
+}
 
 @test "Check single key: value pair" {
     # Error because the error pattern matches
@@ -73,6 +86,48 @@
     [ "$status" -eq 0 ]
 
     run python jmatch.py -t examples/json/fruit3.json examples/patterns/contains_key_value_pairs.json
+    [ "$status" -eq 0 ]
+
+}
+
+
+# Test return values for basic array types
+
+
+@test "Check empty list" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/hero.json examples/patterns/contains_empty_list.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/person.json examples/patterns/contains_empty_list.json
+    [ "$status" -eq 0 ]
+
+}
+
+
+@test "Check multiple values in a list" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/hero.json examples/patterns/list_contains_multiple_values.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/fruit2.json examples/patterns/list_contains_multiple_values.json
+    [ "$status" -eq 0 ]
+
+}
+
+
+# Test list, dict and value compositions
+
+
+@test "Check multiple dictionaries in a list" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/fruit1.json examples/patterns/dictionary_in_list.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/fruit2.json examples/patterns/dictionary_in_list.json
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py -t examples/json/fruit3.json examples/patterns/dictionary_in_list.json
     [ "$status" -eq 0 ]
 
 }
