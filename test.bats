@@ -115,6 +115,28 @@
 
 }
 
+# Test functions
+
+
+@test "Check function key: '_not' on string value -> there is a element which is not XXX" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_not_apple.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/fruit2.json examples/patterns/contains_not_apple.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/null.json examples/patterns/contains_not_null.json
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py -t examples/json/null.json examples/patterns/contains_not_apple.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_not_null.json
+    [ "$status" -eq 1 ]
+
+}
+
 
 # Test list, dict and value compositions
 
