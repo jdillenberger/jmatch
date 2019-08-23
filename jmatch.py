@@ -66,7 +66,7 @@ class JSON_Pattern:
             else:
                 results.append(True)
 
-            if all(results):
+            if _pattern is None:
                 self._result = self._result or all(results)
             return all(results)
 

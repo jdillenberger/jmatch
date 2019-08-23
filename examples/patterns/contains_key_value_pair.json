@@ -1,0 +1,6 @@
+
+{
+  "_type": "error",
+  "_message": "The Document contains a fruit: apple.",
+  "_pattern": {"fruit": "apple"}
+}

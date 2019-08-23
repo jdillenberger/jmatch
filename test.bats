@@ -2,7 +2,7 @@
 
 # Test return values for simple value patterns
 
-@test "Check single value null patterns " {
+@test "Check single value null patterns" {
     # Error because the error pattern matches
     run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_null.json
     [ "$status" -eq 1 ]
@@ -13,7 +13,7 @@
 }
 
 
-@test "Check single value boolean patterns " {
+@test "Check single value boolean patterns" {
     # Error because the error pattern matches
     run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_true.json
     [ "$status" -eq 1 ]
@@ -43,7 +43,7 @@
 }
 
 
-@test "Check single value sting patterns " {
+@test "Check single value sting patterns" {
     # Error because the error pattern matches
     run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_apple.json
     [ "$status" -eq 1 ]
@@ -53,4 +53,11 @@
 }
 
 
+@test "Check key: value pairs" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_key_value_pair.json
+    [ "$status" -eq 1 ]
 
+    run python jmatch.py -t examples/json/fruit2.json examples/patterns/contains_key_value_pair.json
+    [ "$status" -eq 0 ]
+}
