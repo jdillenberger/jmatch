@@ -1,0 +1,15 @@
+[
+    {
+        "fruit": "apple",
+        "price": 0.64,
+        "count": 43,
+        "fresh": false,
+        "retailer": "John Smith"
+    }, {
+        "fruit": "banana",
+        "price": 0.85,
+        "count": 20,
+        "fresh": false,
+        "retailer": "John Smith"
+    }
+]

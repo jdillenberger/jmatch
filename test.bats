@@ -52,12 +52,27 @@
     [ "$status" -eq 0 ]
 }
 
+# Test return values for basic dictionary type elements
 
-@test "Check key: value pairs" {
+@test "Check single key: value pair" {
     # Error because the error pattern matches
     run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_key_value_pair.json
     [ "$status" -eq 1 ]
 
     run python jmatch.py -t examples/json/fruit2.json examples/patterns/contains_key_value_pair.json
     [ "$status" -eq 0 ]
+}
+
+
+@test "Check multiple key: value pairs" {
+    # Error because the error pattern matches
+    run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_key_value_pairs.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -t examples/json/fruit2.json examples/patterns/contains_key_value_pairs.json
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py -t examples/json/fruit3.json examples/patterns/contains_key_value_pairs.json
+    [ "$status" -eq 0 ]
+
 }
