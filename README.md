@@ -23,9 +23,6 @@ in your shell as follows:
 pip install jmatch
 ```
 
-> The application is only tested on *Linux*, it may work on other operating
-> systems, but they are not officially supported.
-
 ## Usage
 
 After jMatch is installed, it is used to examine a JSON-File for patterns.
