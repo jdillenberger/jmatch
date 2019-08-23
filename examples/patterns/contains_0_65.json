@@ -1,6 +1,6 @@
 
 {
   "_type": "error",
-  "_message": "The Document contains a 'hello world' value.",
+  "_message": "The Document contains a 0.65 floating point value.",
   "_pattern": 0.65
 }
