@@ -85,7 +85,7 @@ class JSON_Pattern:
                     results.append(self.matches(element))
 
             else:
-                results.append(True)
+                results.append(False)
 
             return any(results)
 
