@@ -118,7 +118,7 @@
 # Test functions
 
 
-@test "Check function: '_not' on string value -> there is a element which is not XXX" {
+@test "Check function: '_not' -> there is a element which is not XXX" {
     # Error because the error pattern matches
     run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_not_apple.json
     [ "$status" -eq 1 ]
