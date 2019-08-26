@@ -1,9 +1,14 @@
 #!/usr/bin/env bats
 
+# Test application exectution
+@test "Check if jMatch executes in general" {
+    # No error because the error pattern matches
+    run python jmatch.py --help
+    [ "$status" -eq 0 ]
+}
+
 
 # Test return values for simple value patterns
-
-
 @test "Check single value null patterns" {
     # Error because the error pattern matches
     run python jmatch.py -t examples/json/fruit1.json examples/patterns/contains_null.json
