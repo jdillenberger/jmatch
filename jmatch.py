@@ -33,6 +33,14 @@ def main():
     parser.add_argument('--format', choices=['JSON', 'YAML'], default='json',
                         help='Specify the format to analyze, default is JSON')
 
+    parser.add_argument('-t', '--trace', action='store_true',
+                        help='Show routes to matching elements')
+
+    parser.add_argument('-p', '--path', action='store_true',
+                        help='Show name of the used pattern')
+
+    parser.add_argument('-s', '--stats', action='store_true',
+                        help='Show test statistics')
     args = parser.parse_args()
 
     data = str()
@@ -92,24 +100,49 @@ def main():
                     # ToDo: Implement a more meaningful error message here
                     print('Your Metadata is not correct')
                     exit(1)
-                checks.append(check)
+                checks.append(check + {'path': path})
         elif isinstance(decoded_check, dict):
             if not meta_ok(decoded_check):
                 # ToDo: Implement a more meaningful error message here
                 print('Your Metadata is not correct')
                 exit(1)
-            checks.append(decoded_check)
+            checks.append(dict(**decoded_check, **{'path': pattern_file}))
 
+    # Check all patterns and collect data
+    exit_code=0
     for idx, check in enumerate(checks):
-
         current_pattern = pattern.Pattern(check['{0}pattern'.format(args.prefix)], args.prefix)
+        checks[idx]['matches'], checks[idx]['info'] = current_pattern.matches(decoder(data))
+        if checks[idx]['matches'] and check['_type'].lower() in ['error']:
+            exit_code=1
 
-        checks[idx]['matches'] = current_pattern.matches(decoder(data))
+    # Display response
+    for check in checks:
+        if check['matches']:
+            color = 'red' if check['_type'] in 'error' else 'green'
+            message = termcolor.colored(check['_message'], color, attrs=['bold'])
+            print(' ' * 2 + message + '\n')
 
-        rtv = 1 if checks[idx]['matches'] else 0
+            if args.path:
+                print(termcolor.colored(' ' * 4 + 'Pattern-file: \n      => "{0}"\n'.format(check['path'])))
 
-        exit(rtv)
 
+            if args.trace:
+                print(termcolor.colored(' ' * 4 + 'Routes:'))
+                for trace in check['info']['traces']:
+                    print(' ' * 6 + '=> ' + (trace if trace is not '' else "[]"))
+                print()
+    if args.stats:
+        summary = '{0} checks performed, {1} patterns matched, {2} of them are errors\n'.format(
+            len(checks),
+            len(list(filter(lambda x: x['matches'], checks))),
+            len(list(filter(lambda x: x['matches'] and x['_type'] == 'error', checks)))
+        )
+        print('  {0} {1}'.format(termcolor.colored('Summary:', attrs=['bold']), summary))
+    else:
+        print()
+
+    exit(exit_code)
 
 if __name__ == '__main__':
     main()

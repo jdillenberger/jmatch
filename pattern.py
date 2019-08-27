@@ -1,5 +1,6 @@
 import inspect
 import match_extensions
+import copy
 
 class Pattern:
 
@@ -7,9 +8,12 @@ class Pattern:
         self.function_prefix = function_prefix
         self.pattern = pattern
         self._result = False
-        self._state = {}
+        self._state = {
+            'traces': [],
+            'variables': {}
+        }
 
-    def node_matches(self, node, modifier=[], _pattern=None):
+    def node_matches(self, node, modifier={}, _pattern=None):
 
         pattern = self.pattern if _pattern is None else _pattern
 
@@ -40,7 +44,7 @@ class Pattern:
         else:
             return type(node) == type(pattern) and node == pattern
 
-    def subtree_matches(self, subtree, modifier=[], _pattern=None):
+    def subtree_matches(self, subtree, modifier={}, _pattern=None):
 
         pattern = self.pattern if _pattern is None else _pattern
 
@@ -72,23 +76,31 @@ class Pattern:
         else:
             return False
 
-    def matches(self, tree):
+    def matches(self, tree, modifiers={}):
+
+        if 'trace' not in modifiers.keys():
+            modifiers['trace'] = []
 
         if self.subtree_matches(tree):
-            return True
+            self._state['traces'].append(' > '.join(map(str, modifiers['trace'])))
+            return (True, self._state)
 
         results = []
 
         if isinstance(tree, dict):
-            for _, element in tree.items():
-                results.append(self.matches(element))
+            for key, element in tree.items():
+                new_modifiers = copy.deepcopy(modifiers)
+                new_modifiers['trace'].append('[{0}]'.format(key))
+                results.append(self.matches(element, new_modifiers)[0])
 
         # LISTS
         elif isinstance(tree, list):
-            for element in tree:
-                results.append(self.matches(element))
+            for idx, element in enumerate(tree):
+                new_modifiers = copy.deepcopy(modifiers)
+                new_modifiers['trace'].append('[{0}]'.format(idx))
+                results.append(self.matches(element, new_modifiers)[0])
 
         else:
             results.append(False)
 
-        return any(results)
+        return (any(results), self._state)
