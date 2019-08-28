@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-
-import argparse
-import json
-import os
-import requests
-import sys
-import termcolor
-import pattern
-
+try:
+    import argparse
+    import json
+    import os
+    import requests
+    import sys
+    import termcolor
+    import pattern
+    import yaml
+except ImportError as error:
+    print("There are missing dependencies for jmatch: \"{0}\"".format(error))
+    exit(1)
 
 def main():
 
