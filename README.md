@@ -39,7 +39,8 @@ all systems interoperate correctly.
 JSON-document needs to be specified, which contains at least the following data
 concerning the given problem.
 
- - **type:** `info` or `error`  - **message:** *A message to print if the pattern matches*
+ - **type:** `info` or `error`
+ - **message:** *A message to print if the pattern matches*
  - **pattern:** *An info or error case pattern that is searched in the document to check.
 
 
