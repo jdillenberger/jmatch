@@ -1,10 +1,9 @@
 # jMatch
 
-jMatch is a test-application for JSON files. It allows you to check JSON files
-against a specification based on defined patterns. This is especially useful if
-you need to check lots of JSON files for a given specification or if you want
-to check your JSON files in a continuous integration pipeline.
-
+jMatch is a *testsuite* for `JSON/YAML` files. It allows you to check these
+files against a specification based on defined patterns. This is useful if you
+need to check lots of JSON files or if you want to check your JSON files in a
+continuous integration pipeline.
 
 ## Table of Contents
 
