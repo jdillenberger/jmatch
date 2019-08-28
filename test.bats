@@ -97,8 +97,6 @@
 
 
 # Test return values for basic array types
-
-
 @test "Check empty list" {
     # Error because the error pattern matches
     run python jmatch.py -f examples/json/hero.json examples/patterns/contains_empty_list.json
@@ -121,8 +119,6 @@
 }
 
 # Test functions
-
-
 @test "Check function: '_not' -> there is a element which is not XXX" {
     # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_not_apple.json
@@ -155,8 +151,6 @@
 
 
 # Test list, dict and value compositions
-
-
 @test "Check multiple dictionaries in a list" {
     # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/dictionary_in_list.json
@@ -166,6 +160,20 @@
     [ "$status" -eq 0 ]
 
     run python jmatch.py -f examples/json/fruit3.json examples/patterns/dictionary_in_list.json
+    [ "$status" -eq 0 ]
+
+}
+
+
+@test "Check multiple dictionaries in a list for YAML" {
+    # Error because the error pattern matches
+    run python jmatch.py --format YAML -f examples/yaml/fruit1.yml examples/patterns/dictionary_in_list.yml
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py --format YAML -f examples/yaml/fruit2.yml examples/patterns/dictionary_in_list.yml
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py --format YAML -f examples/yaml/fruit3.yml examples/patterns/dictionary_in_list.yml
     [ "$status" -eq 0 ]
 
 }

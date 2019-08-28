@@ -1,0 +1,10 @@
+- count: 43
+  fresh: false
+  fruit: apple
+  price: 0.64
+  retailer: John Smith
+- count: 20
+  fresh: false
+  fruit: orange
+  price: 0.85
+  retailer: John Smith

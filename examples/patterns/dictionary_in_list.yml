@@ -1,0 +1,5 @@
+_message: The Document contains apples and bananas
+_pattern:
+- fruit: apple
+- fruit: banana
+_type: error
