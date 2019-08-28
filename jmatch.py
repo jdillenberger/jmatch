@@ -76,8 +76,7 @@ def main():
     if decode_format in ['json']:
         decoder = json.loads
     elif decode_format in ['yml', 'yaml']:
-        # ToDo: Implement YML-loader
-        # decoder = ...
+        decoder = yaml.safe_load
         pass
     else:
         print('The specified format "{0}" is not supported.'.format(args.format))
