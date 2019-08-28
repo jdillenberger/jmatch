@@ -41,8 +41,7 @@ concerning the given problem.
 
  - **type:** `info` or `error`
  - **message:** *A message to print if the pattern matches*
- - **pattern:** *An info or error case pattern that is searched in the document to check.
-
+ - **pattern:** *An info or error case pattern that is searched in the document to check.*
 
 ```javascript
 [{
@@ -72,7 +71,7 @@ jmatch --target configfile.json check-encoding-utf8.json
 If the configfile contains the pattern specified in `check-encoding-utf8.json`, the
 `_message` specified is displayed.
 
-### Check a file for multiple patterns
+#### Check for multiple patterns at once
 
 jMatch allows to check many patterns at once, therefore all pattern files must
 be provided when running jMatch.
@@ -87,6 +86,11 @@ to specify many pattern files easily:
 ```sh
 jmatch --target hello.json pattern*.json
 ```
+
+#### Flags
+
+There are many different flags which change jMatchs default behavior. You can
+use the `--help` flag to show all available options.
 
 ## Support
 
