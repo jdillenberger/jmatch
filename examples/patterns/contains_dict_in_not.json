@@ -1,0 +1,13 @@
+
+{
+  "_type": "error",
+  "_message": "The Document contains a value, which is not apple.",
+  "_pattern": [
+      {
+          "_not": {
+            "retailer": "John Smith",
+            "fresh": false
+      }
+    }
+  ]
+}

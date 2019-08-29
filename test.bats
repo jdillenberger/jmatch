@@ -177,3 +177,16 @@
     [ "$status" -eq 0 ]
 
 }
+
+
+@test "Check for dictionary in _not" {
+    # Error because the error pattern matches
+    run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_dict_in_not.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -f examples/json/fruit3.json examples/patterns/contains_dict_in_not.json
+    [ "$status" -eq 0 ]
+
+}
+
+
