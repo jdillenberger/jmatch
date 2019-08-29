@@ -1,0 +1,8 @@
+
+{
+  "_type": "error",
+  "_message": "The Document contains a count smaller_then_equal 42.",
+  "_pattern": {
+      "count": {"_smaller_then_equal": 42}
+  }
+}

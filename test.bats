@@ -10,18 +10,15 @@
 
 # Test return values for simple value patterns
 @test "Check single value null patterns" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_null.json
     [ "$status" -eq 1 ]
 
-    # No error because the error pattern matches
     run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_null.json
     [ "$status" -eq 0 ]
 }
 
 
 @test "Check single value boolean patterns" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_true.json
     [ "$status" -eq 1 ]
 
@@ -31,7 +28,6 @@
 
 
 @test "Check single value integer patterns" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_42.json
     [ "$status" -eq 1 ]
 
@@ -41,7 +37,6 @@
 
 
 @test "Check single value float patterns" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_0_65.json
     [ "$status" -eq 1 ]
 
@@ -51,7 +46,6 @@
 
 
 @test "Check single value sting patterns" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_apple.json
     [ "$status" -eq 1 ]
 
@@ -63,13 +57,11 @@
 # Test return values for basic dictionary type elements
 
 @test "Check empty dict" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/hero.json examples/patterns/contains_empty_dictionary.json
     [ "$status" -eq 1 ]
 
     run python jmatch.py -f examples/json/ingredients.json examples/patterns/contains_empty_dictionary.json
     [ "$status" -eq 0 ]
-
 }
 
 @test "Check single key: value pair" {
@@ -83,7 +75,6 @@
 
 
 @test "Check multiple key: value pairs" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_key_value_pairs.json
     [ "$status" -eq 1 ]
 
@@ -92,35 +83,29 @@
 
     run python jmatch.py -f examples/json/fruit3.json examples/patterns/contains_key_value_pairs.json
     [ "$status" -eq 0 ]
-
 }
 
 
 # Test return values for basic array types
 @test "Check empty list" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/hero.json examples/patterns/contains_empty_list.json
     [ "$status" -eq 1 ]
 
     run python jmatch.py -f examples/json/person.json examples/patterns/contains_empty_list.json
     [ "$status" -eq 0 ]
-
 }
 
 
 @test "Check multiple values in a list" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/hero.json examples/patterns/list_contains_multiple_values.json
     [ "$status" -eq 1 ]
 
     run python jmatch.py -f examples/json/fruit2.json examples/patterns/list_contains_multiple_values.json
     [ "$status" -eq 0 ]
-
 }
 
 # Test functions
 @test "Check function: '_not' -> there is a element which is not XXX" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_not_apple.json
     [ "$status" -eq 1 ]
 
@@ -135,24 +120,20 @@
 
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_not_null.json
     [ "$status" -eq 1 ]
-
 }
 
 
 @test "Check function: '_regex' on string value" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_regex_apple.json
     [ "$status" -eq 1 ]
 
     run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_regex_apple.json
     [ "$status" -eq 0 ]
-
 }
 
 
 # Test list, dict and value compositions
 @test "Check multiple dictionaries in a list" {
-    # Error because the error pattern matches
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/dictionary_in_list.json
     [ "$status" -eq 1 ]
 
@@ -161,12 +142,10 @@
 
     run python jmatch.py -f examples/json/fruit3.json examples/patterns/dictionary_in_list.json
     [ "$status" -eq 0 ]
-
 }
 
 
 @test "Check multiple dictionaries in a list for YAML" {
-    # Error because the error pattern matches
     run python jmatch.py --format YAML -f examples/yaml/fruit1.yml examples/patterns/dictionary_in_list.yml
     [ "$status" -eq 1 ]
 
@@ -175,18 +154,57 @@
 
     run python jmatch.py --format YAML -f examples/yaml/fruit3.yml examples/patterns/dictionary_in_list.yml
     [ "$status" -eq 0 ]
-
 }
 
-
-@test "Check for dictionary in _not" {
-    # Error because the error pattern matches
+@test "Check for dictionary in 'not'" {
     run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_dict_in_not.json
     [ "$status" -eq 1 ]
 
     run python jmatch.py -f examples/json/fruit3.json examples/patterns/contains_dict_in_not.json
     [ "$status" -eq 0 ]
-
 }
+
+@test "Check greater_then function" {
+    run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_greater_then_42.json
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_greater_then_42.json
+    [ "$status" -eq 1 ]
+}
+
+@test "Check greater_then_equal function" {
+    run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_greater_then_equal_43.json
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_greater_then_equal_43.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -f examples/json/fruit3.json examples/patterns/contains_greater_then_equal_43.json
+    [ "$status" -eq 1 ]
+}
+
+@test "Check smaller_then_equal function" {
+    run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_smaller_then_equal_42.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_smaller_then_equal_42.json
+    [ "$status" -eq 0 ]
+
+    run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_smaller_then_equal_42.json
+    [ "$status" -eq 0 ]
+}
+
+@test "Check smaller_then function" {
+    run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_smaller_then_43.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_smaller_then_43.json
+    [ "$status" -eq 0 ]
+}
+
+
+
+
+
 
 
