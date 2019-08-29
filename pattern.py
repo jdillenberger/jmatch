@@ -2,6 +2,8 @@ import inspect
 import match_extensions
 import copy
 
+impossible_value = '_-NONE-_'
+
 class Pattern:
 
     def __init__(self, pattern, function_prefix='_'):
@@ -13,9 +15,9 @@ class Pattern:
             'variables': {}
         }
 
-    def node_matches(self, node, modifier={}, _pattern=None):
+    def node_matches(self, node, new_pattern=impossible_value):
 
-        pattern = self.pattern if _pattern is None else _pattern
+        pattern = self.pattern if new_pattern is impossible_value else new_pattern
 
         # Handle filter functions
         if isinstance(pattern, dict) \
@@ -29,10 +31,8 @@ class Pattern:
             if callable(extension):
 
                 result = extension(self, {
-                    'scope': 'node',
-                    'element': node,
-                    'pattern': pattern[key],
-                    'modifier': copy.deepcopy(modifier),
+                    'node': node,
+                    'pattern': copy.deepcopy(pattern[key]),
                     'state': self._state,
                 })
 
@@ -49,19 +49,18 @@ class Pattern:
         else:
             return type(node) == type(pattern) and node == pattern
 
-    def subtree_matches(self, subtree, modifier={}, _pattern=None):
+    def subtree_matches(self, subtree, new_pattern=impossible_value):
 
-        pattern = self.pattern if _pattern is None else _pattern
+        pattern = self.pattern if new_pattern is impossible_value else new_pattern
 
         results = []
 
-        if self.node_matches(subtree, modifier, _pattern):
+        if self.node_matches(subtree, pattern):
 
             # Handle filter functions
             if isinstance(pattern, dict) \
                 and len(pattern) is 1 \
                 and self.function_prefix in list(pattern.keys())[0]:
-
                 key = list(pattern.keys())[0]
 
                 extension = match_extensions.get('{0}_subtree'.format(key[1:]))
@@ -69,25 +68,24 @@ class Pattern:
                 if callable(extension):
 
                     result = extension(self, {
-                        'element': subtree,
-                        'pattern': pattern[key],
-                        'modifier': copy.deepcopy(modifier),
+                        'subtree': subtree,
+                        'pattern': copy.deepcopy(pattern[key]),
                         'state': self._state,
                     })
 
-                    if result is not None:
+                    if result in [True, False]:
                         return result
 
             # Handle non function matching
-            if isinstance(subtree, dict):
+            if isinstance(subtree, dict) and isinstance(pattern, dict):
                 for key, child_pattern in pattern.items():
-                    results.append((self.subtree_matches(subtree[key], modifier, child_pattern)))
+                    results.append((self.subtree_matches(subtree[key], child_pattern)))
 
-            elif isinstance(subtree, list):
+            elif isinstance(subtree, list) and isinstance(pattern, list):
                 for child_pattern in pattern:
                     element_found = []
                     for element in subtree:
-                        element_found.append(self.subtree_matches(element, modifier, child_pattern))
+                        element_found.append(self.subtree_matches(element, child_pattern))
                     results.append(any(element_found))
             else:
                 results.append(True)
