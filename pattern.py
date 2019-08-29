@@ -18,21 +18,26 @@ class Pattern:
         pattern = self.pattern if _pattern is None else _pattern
 
         # Handle filter functions
-        if isinstance(pattern, dict) and len(pattern) is 1 and self.function_prefix in list(pattern.keys())[0]:
+        if isinstance(pattern, dict) \
+            and len(pattern) is 1 \
+            and self.function_prefix in list(pattern.keys())[0]:
 
             key = list(pattern.keys())[0]
 
-            extension = match_extensions.get('{0}_handler'.format(key[1:]))
+            extension = match_extensions.get('{0}_node'.format(key[1:]))
 
-            data = extension(self, {
-                'scope': 'node',
-                'element': node,
-                'pattern': pattern[key],
-                'modifier': modifier,
-                'state': self._state,
-            })
+            if callable(extension):
 
-            return data['result']
+                result = extension(self, {
+                    'scope': 'node',
+                    'element': node,
+                    'pattern': pattern[key],
+                    'modifier': copy.deepcopy(modifier),
+                    'state': self._state,
+                })
+
+                if result is not None:
+                    return result
 
         # Handle non function matching
         if isinstance(node, dict):
@@ -53,9 +58,25 @@ class Pattern:
         if self.node_matches(subtree, modifier, _pattern):
 
             # Handle filter functions
-            if isinstance(pattern, dict) and len(pattern) is 1 and self.function_prefix in list(pattern.keys())[0]:
-                # ToDo: Add functions
-                pass
+            if isinstance(pattern, dict) \
+                and len(pattern) is 1 \
+                and self.function_prefix in list(pattern.keys())[0]:
+
+                key = list(pattern.keys())[0]
+
+                extension = match_extensions.get('{0}_subtree'.format(key[1:]))
+
+                if callable(extension):
+
+                    result = extension(self, {
+                        'element': subtree,
+                        'pattern': pattern[key],
+                        'modifier': copy.deepcopy(modifier),
+                        'state': self._state,
+                    })
+
+                    if result is not None:
+                        return result
 
             # Handle non function matching
             if isinstance(subtree, dict):
