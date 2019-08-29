@@ -46,8 +46,8 @@ def range_node(pattern_handler, data):
     if '..' in data['pattern']:
         num1, num2 = data['pattern'].split('..').sort()
 
-        if num1.isnummeric() and num2.isnummeric():
-            if not str(data['node']).isnummeric():
+        if num1.isnumeric() and num2.isnumeric():
+            if not str(data['node']).isnumeric():
                 raise ValueError('The "range" function can only be applied to a nummeric value.')
             return num1 < data['node'] and num2 > data['node']
 
@@ -55,25 +55,25 @@ def range_node(pattern_handler, data):
 
 # Bigger/Smaller then functions
 def bigger_then_node(pattern_handler, data):
-    if not str(data['pattern']).isnummeric() and not str(data['pattern']).isnummeric():
+    if not str(data['pattern']).isnumeric() and not str(data['pattern']).isnumeric():
         raise ValueError('The "bigger_then" function can only be applied to a nummeric value.')
-        return data['node'] > data['pattern']
+    return data['node'] > data['pattern']
 
 def bigger_then_equal_node(pattern_handler, data):
-    if not str(data['pattern']).isnummeric() and not str(data['pattern']).isnummeric():
+    if not str(data['pattern']).isnumeric() and not str(data['pattern']).isnumeric():
         raise ValueError('The "bigger_then_equal" function can only be applied to a nummeric value.')
     return data['node'] >= data['pattern']
 
 
 def smaller_then_node(pattern_handler, data):
-    if not str(data['pattern']).isnummeric() and not str(data['pattern']).isnummeric():
+    if not str(data['pattern']).isnumeric() and not str(data['pattern']).isnumeric():
         raise ValueError('The "smaller_then" function can only be applied to a nummeric value.')
-    return data['node'] > data['pattern']
+    return data['node'] < data['pattern']
 
 def smaller_then_equal_node(pattern_handler, data):
-    if not str(data['pattern']).isnummeric() and not str(data['pattern']).isnummeric():
+    if not str(data['pattern']).isnumeric() and not str(data['pattern']).isnumeric():
         raise ValueError('The "smaller_then_equal" function can only be applied to a nummeric value.')
-    return data['node'] >= data['pattern']
+    return data['node'] <= data['pattern']
 
 
 # Type Function
