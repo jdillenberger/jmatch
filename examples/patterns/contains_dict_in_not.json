@@ -1,7 +1,7 @@
 
 {
   "_type": "error",
-  "_message": "The Document contains a value, which is not apple.",
+  "_message": "The Document contains a ditionary inside a not function",
   "_pattern": [
       {
           "_not": {
