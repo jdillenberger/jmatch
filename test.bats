@@ -202,6 +202,17 @@
     [ "$status" -eq 0 ]
 }
 
+@test "Check or function" {
+    run python jmatch.py -f examples/json/fruit1.json examples/patterns/contains_lemon_or_banana.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -f examples/json/fruit2.json examples/patterns/contains_lemon_or_banana.json
+    [ "$status" -eq 1 ]
+
+    run python jmatch.py -f examples/json/fruit3.json examples/patterns/contains_lemon_or_banana.json
+    [ "$status" -eq 0 ]
+}
+
 
 
 
