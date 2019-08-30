@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-import setuptools
 import os
-import time
+import setuptools
 
-requires = list(map(lambda s: str(s).replace('\n', ''), open('requirements.txt', 'r').readlines()))
+REQUIRES = list(map(lambda s: str(s).replace('\n', ''), open('requirements.txt', 'r').readlines()))
 
 
 with open('README.md', 'r') as README:
@@ -19,8 +18,8 @@ with open('README.md', 'r') as README:
         url='https://gitlab.rlp.net/jdillenberger/jmatch',
         packages=setuptools.find_packages(),
         python_requires='>=3.*',
-        py_modules=requires,
-        install_requires=requires,
+        py_modules=REQUIRES,
+        install_requires=REQUIRES,
         classifiers=[
             "Programming Language :: Python :: 3",
             "License :: OSI Approved :: MIT License",

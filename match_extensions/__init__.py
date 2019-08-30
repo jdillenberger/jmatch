@@ -8,5 +8,4 @@ def get(name):
         funct = getattr(match_extensions, member[0])
         if inspect.isfunction(funct) and inspect.stack()[0][3] is not member[0]:
             member_functions.append(funct)
-    return {func.__name__: func for func in member_functions }.get(name, None)
-
+    return {func.__name__: func for func in member_functions}.get(name, None)
