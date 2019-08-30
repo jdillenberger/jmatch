@@ -1,32 +1,34 @@
+from typing import Union, Callable
 import inspect
 import match_extensions
 import copy
 
 impossible_value = '_-NONE-_'
+tree_type=Union[None,bool,int,float,str,list,dict]
 
 class Pattern:
 
-    def __init__(self, pattern, function_prefix='_'):
-        self.function_prefix = function_prefix
-        self.pattern = pattern
-        self._result = False
-        self._state = {
+    def __init__(self, pattern:tree_type, function_prefix:str='_'):
+        self.function_prefix:str = function_prefix
+        self.pattern:tree_type = pattern
+        self._result:bool = False
+        self._state:dict = {
             'traces': [],
             'variables': {}
         }
 
-    def node_matches(self, node, new_pattern=impossible_value):
+    def node_matches(self, node:tree_type, new_pattern:tree_type=impossible_value):
 
-        pattern = self.pattern if new_pattern is impossible_value else new_pattern
+        pattern:tree_type = self.pattern if new_pattern is impossible_value else new_pattern
 
         # Handle filter functions
         if isinstance(pattern, dict) \
             and len(pattern) is 1 \
             and self.function_prefix in list(pattern.keys())[0]:
 
-            key = list(pattern.keys())[0]
+            key:list = list(pattern.keys())[0]
 
-            extension = match_extensions.get('{0}_node'.format(key[1:]))
+            extension:Union[Callable,None] = match_extensions.get('{0}_node'.format(key[1:]))
 
             if callable(extension):
 
@@ -49,11 +51,11 @@ class Pattern:
         else:
             return type(node) == type(pattern) and node == pattern
 
-    def subtree_matches(self, subtree, new_pattern=impossible_value):
+    def subtree_matches(self, subtree:tree_type, new_pattern:tree_type=impossible_value):
 
-        pattern = self.pattern if new_pattern is impossible_value else new_pattern
+        pattern:tree_type = self.pattern if new_pattern is impossible_value else new_pattern
 
-        results = []
+        results:list = []
 
         if self.node_matches(subtree, pattern):
 
@@ -63,11 +65,11 @@ class Pattern:
                 and self.function_prefix in list(pattern.keys())[0]:
                 key = list(pattern.keys())[0]
 
-                extension = match_extensions.get('{0}_subtree'.format(key[1:]))
+                extension:Union[Callable,None] = match_extensions.get('{0}_subtree'.format(key[1:]))
 
                 if callable(extension):
 
-                    result = extension(self, {
+                    result:bool = extension(self, {
                         'subtree': subtree,
                         'pattern': copy.deepcopy(pattern[key]),
                         'state': self._state,
@@ -83,7 +85,7 @@ class Pattern:
 
             elif isinstance(subtree, list) and isinstance(pattern, list):
                 for child_pattern in pattern:
-                    element_found = []
+                    element_found:list = []
                     for element in subtree:
                         element_found.append(self.subtree_matches(element, child_pattern))
                     results.append(any(element_found))
@@ -95,7 +97,7 @@ class Pattern:
         else:
             return False
 
-    def matches(self, tree, modifiers={}):
+    def matches(self, tree:tree_type, modifiers:dict={}):
 
         if 'trace' not in modifiers.keys():
             modifiers['trace'] = []
@@ -104,7 +106,7 @@ class Pattern:
             self._state['traces'].append(' > '.join(map(str, modifiers['trace'])))
             return (True, self._state)
 
-        results = []
+        results:list = []
 
         if isinstance(tree, dict):
             for key, element in tree.items():

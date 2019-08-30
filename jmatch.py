@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 try:
+    import typing
     import argparse
     import json
     import os
@@ -44,15 +45,16 @@ def main():
 
     parser.add_argument('-s', '--stats', action='store_true',
                         help='Show test statistics')
+
     args = parser.parse_args()
 
-    data = str()
+    data:str = ''
 
     # Get data to check as string
     if args.stdin is True:
-        data = sys.stdin
+        data = str(sys.stdin)
     elif args.file is not None:
-        path = os.path.realpath(args.file)
+        path:str = os.path.realpath(args.file)
         if not os.path.exists(path):
             print('The file "{0}" does not exist.'.format(args.file))
         data = open(path, 'r', encoding=args.encoding).read()
@@ -71,7 +73,7 @@ def main():
     termcolor.cprint('\nAnalysis of {0}\n'.format(os.path.realpath(args.file)), attrs=['bold'])
 
     # Get pattern decoder
-    decoder = None
+    decoder:typing.Union[typing.Callable, None] = None
     decode_format = str(args.format).lower()
     if decode_format in ['json']:
         decoder = json.loads
@@ -83,7 +85,7 @@ def main():
         exit(1)
 
     # Create List of all patterns to check and their metadata
-    checks = []
+    checks:list = []
     for pattern_file in args.pattern:
         path = os.path.realpath(pattern_file)
         if not os.path.exists(path):
@@ -92,7 +94,7 @@ def main():
 
         decoded_check = decoder(open(path, 'r', encoding=args.encoding).read())
 
-        def meta_ok(check):
+        def meta_ok(check:dict):
             required_keys = map(lambda s: '{0}{1}'.format(args.prefix, s.lower()), ['message', 'type', 'pattern'])
             return all(list(map(lambda x: x in check.keys(), required_keys)))
 
