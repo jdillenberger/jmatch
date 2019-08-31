@@ -112,7 +112,8 @@ def main():
             for check in decoded_check:
                 if not meta_ok(check):
                     exit(1)
-                checks.append(check + {'path': path})
+                check['path'] = path
+                checks.append(check)
         elif isinstance(decoded_check, dict):
             if not meta_ok(decoded_check):
                 print(meta_wrong_error.format(required_keys))
