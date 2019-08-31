@@ -102,8 +102,10 @@ def main():
         if not os.path.exists(path):
             print('The pattern file "{0}" does not exist.'.format(pattern_file))
             exit(1)
-
-        decoded_check = decoder(open(path, 'r', encoding=args.encoding).read())
+        try:
+            decoded_check = decoder(open(path, 'r', encoding=args.encoding).read())
+        except json.decoder.JSONDecodeError as e:
+            print('The patternfile "{0}" is no valid JSON file.')
 
         required_keys = map(lambda s: '{0}{1}'.format(args.prefix, s.lower()), required_names)
         meta_wrong_error = 'Your Metadata is missing one of the folowing keys: {0} '
