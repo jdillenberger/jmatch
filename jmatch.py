@@ -102,21 +102,20 @@ def main():
 
         decoded_check = decoder(open(path, 'r', encoding=args.encoding).read())
 
+        required_keys = map(lambda s: '{0}{1}'.format(args.prefix, s.lower()), required_names)
+        meta_wrong_error = 'Your Metadata is missing one of the folowing keys: {0} '
+
         def meta_ok(check: dict):
-            required_keys = map(lambda s: '{0}{1}'.format(args.prefix, s.lower()), required_names)
             return all(list(map(lambda x: x in check.keys(), required_keys)))
 
         if isinstance(decoded_check, list):
             for check in decoded_check:
                 if not meta_ok(check):
-                    # ToDo: Implement a more meaningful error message here
-                    print('Your Metadata is not correct')
                     exit(1)
                 checks.append(check + {'path': path})
         elif isinstance(decoded_check, dict):
             if not meta_ok(decoded_check):
-                # ToDo: Implement a more meaningful error message here
-                print('Your Metadata is not correct')
+                print(meta_wrong_error.format(required_keys))
                 exit(1)
             checks.append(dict(**decoded_check, **{'path': pattern_file}))
 
