@@ -22,36 +22,38 @@ def main():
     '''
 
     # Parse commandline arguments and create helppage
-    parser = argparse.ArgumentParser(description='Check file for patterns')
+    parser = argparse.ArgumentParser(
+            description='Simple test-suite for json/yaml files, optimized for CI pipelines.')
+
     parser.add_argument('pattern', type=str, nargs='+',
                         help="Files containing patterns to apply to the JSON-Document")
 
     group = parser.add_mutually_exclusive_group()
 
     group.add_argument('--stdin', action='store_true',
-                       help='Read from `stdin`')
+                       help='read document to check from `stdin`')
     group.add_argument('-f', '--file', type=str, metavar='STR',
-                       help='File to check.')
+                       help='read document to check from file.')
     group.add_argument('-u', '--url', type=str, metavar='STR',
-                       help='Online resource to check.')
+                       help='read document to check from URL')
 
     parser.add_argument('--encoding', type=str, metavar='STR', default='UTF-8',
-                        help='File encoding - default is UTF-8')
+                        help='set file encoding - default is UTF-8')
 
     parser.add_argument('--prefix', type=str, metavar='STR', default='_',
-                        help='Prefix for pattern functions line "not", default is "_"')
+                        help='meta and function prefix used by jMatch, default is "_"')
 
     parser.add_argument('--format', choices=['JSON', 'YAML'], default='json',
-                        help='Specify the format to analyze, default is JSON')
+                        help='format of the document to check')
 
     parser.add_argument('-t', '--trace', action='store_true',
-                        help='Show routes to matching elements')
+                        help='show routes to matching elements in the document')
 
     parser.add_argument('-p', '--path', action='store_true',
-                        help='Show name of the used pattern')
+                        help='print the source path of the used pattern')
 
     parser.add_argument('-s', '--stats', action='store_true',
-                        help='Show test statistics')
+                        help='show statistics for all the performed checks')
 
     args = parser.parse_args()
 
