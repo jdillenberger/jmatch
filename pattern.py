@@ -1,4 +1,4 @@
-from typing import Union, Callable
+from typing import Union, Callable, Tuple, Dict, Any
 import copy
 import match_extensions
 
@@ -129,7 +129,7 @@ class Pattern:
         else:
             return False
 
-    def matches(self, tree: TreeType, modifiers: dict = {}) -> bool:
+    def matches(self, tree: TreeType, modifiers: dict = {}) -> Tuple[bool, Dict[Any, Any]]:
         '''
         # Method: node_matches
         Checks if a pattern is contained in a tree provided by
