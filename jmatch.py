@@ -62,7 +62,7 @@ def main():
     data: str = ''
 
     if args.stdin is True:
-        data = str(sys.stdin)
+        data = str(sys.stdin.read())
     elif args.file is not None:
         path: str = os.path.realpath(args.file)
         if not os.path.exists(path):
@@ -76,11 +76,12 @@ def main():
             exit(1)
         data = request.text
     else:
-        print('You need to specify a --target file or to pass --json data.')
+        print('You need to specify a --target file, a --url or --stdin to read data.')
         exit(1)
 
     # Output Headline
-    termcolor.cprint('\nAnalysis of {0}\n'.format(os.path.realpath(args.file)), attrs=['bold'])
+    if args.file is not None:
+        termcolor.cprint('\nAnalysis of {0}\n'.format(os.path.realpath(args.file)), attrs=['bold'])
 
     # Get pattern decoder
     decoder: typing.Union[typing.Callable, None] = None
