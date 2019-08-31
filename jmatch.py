@@ -69,7 +69,7 @@ def main():
             print('The file "{0}" does not exist.'.format(args.file))
         data = open(path, 'r', encoding=args.encoding).read()
     elif args.url is not None:
-        request = requests.get(args.url, auth=('user', 'pass'))
+        request = requests.get(args.url)
         if request.status_code != 200:
             message = 'The url: "{0}" is not accessible. The request returned status code {1}'
             print(message.format(args.url, request.status_code))
