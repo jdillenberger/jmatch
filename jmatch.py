@@ -125,14 +125,14 @@ def main():
     for idx, check in enumerate(checks):
         current_pattern = pattern.Pattern(check['{0}pattern'.format(args.prefix)], args.prefix)
         checks[idx]['matches'], checks[idx]['info'] = current_pattern.matches(decoder(data))
-        if checks[idx]['matches'] and check['_type'].lower() in ['error']:
+        if checks[idx]['matches'] and check['{0}type'.format(args.prefix)].lower() in ['error']:
             exit_code = 1
 
     # Display response
     for check in checks:
         if check['matches']:
-            color = 'red' if check['_type'] in 'error' else 'green'
-            message = termcolor.colored(check['_message'], color, attrs=['bold'])
+            color = 'red' if check['{0}type'.format(args.prefix)] in 'error' else 'green'
+            message = termcolor.colored(check['{0}message'.format(args.prefix)], color, attrs=['bold'])
             print(' ' * 2 + message + '\n')
 
             if args.path:
@@ -146,10 +146,12 @@ def main():
                     print(' ' * 6 + '=> ' + (trace if trace != '' else "[]"))
                 print()
     if args.stats:
+
+        error_filter = lambda x: x['matches'] and x['{0}type'.format(args.prefix)] == 'error'
         summary = '{0} checks performed, {1} patterns matched, {2} of them are errors\n'.format(
             len(checks),
             len(list(filter(lambda x: x['matches'], checks))),
-            len(list(filter(lambda x: x['matches'] and x['_type'] == 'error', checks)))
+            len(list(filter(error_filter, checks)))
         )
         print('  {0} {1}'.format(termcolor.colored('Summary:', attrs=['bold']), summary))
     else:
