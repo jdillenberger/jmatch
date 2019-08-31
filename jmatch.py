@@ -13,8 +13,15 @@ except ImportError as error:
     print("There are missing dependencies for jmatch: \"{0}\"".format(error))
     exit(1)
 
-def main():
 
+def main():
+    '''
+    # Main Function
+    execute hook for setuptools install
+    defined in setup.py
+    '''
+
+    # Parse commandline arguments and create helppage
     parser = argparse.ArgumentParser(description='Check file for patterns')
     parser.add_argument('pattern', type=str, nargs='+',
                         help="Files containing patterns to apply to the JSON-Document")
@@ -48,9 +55,10 @@ def main():
 
     args = parser.parse_args()
 
-    data: str = ''
 
     # Get data to check as string
+    data: str = ''
+
     if args.stdin is True:
         data = str(sys.stdin)
     elif args.file is not None:

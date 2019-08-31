@@ -1,6 +1,17 @@
 import re
 
-# Not Function
+'''
+# Basic pattern functions
+Node and subtree match functions, to be executed from
+a Patterns node_matches and subtree_matches function
+if they are requested by the given pattern.
+
+Functions with a _node suffix, are executed by a Patterns
+"node_matches" method and functions with a _subtree suffix
+are executed by a Patterns "subtree_matches" method.
+
+'''
+
 def not_node(pattern_handler, data):
     #pylint: disable=unused-argument
     return True
@@ -9,7 +20,6 @@ def not_subtree(pattern_handler, data):
     #pylint: disable=unused-argument
     return not pattern_handler.subtree_matches(data['subtree'], data['pattern'])
 
-# Or Function
 def or_node(pattern_handler, data):
     #pylint: disable=unused-argument
     return True
@@ -23,7 +33,6 @@ def or_subtree(pattern_handler, data):
         result.append(pattern_handler.subtree_matches(data['subtree'], pattern))
     return any(result)
 
-# And Function
 def and_node(pattern_handler, data):
     #pylint: disable=unused-argument
     return True
@@ -37,8 +46,6 @@ def and_subtree(pattern_handler, data):
         result.append(pattern_handler.subtree_matches(data['subtree'], pattern))
     return all(result)
 
-
-# Regex Function
 def regex_node(pattern_handler, data):
     #pylint: disable=unused-argument
     if isinstance(data['pattern'], (dict, list)):
@@ -48,7 +55,6 @@ def regex_node(pattern_handler, data):
     return False
 
 
-# Range Node
 def range_node(pattern_handler, data):
     #pylint: disable=unused-argument
     if '..' in data['pattern']:
@@ -61,7 +67,6 @@ def range_node(pattern_handler, data):
 
     raise ValueError
 
-# Bigger/Smaller then functions
 def bigger_then_node(pattern_handler, data):
     #pylint: disable=unused-argument
     if not str(data['pattern']).isnumeric() and not str(data['pattern']).isnumeric():
@@ -74,7 +79,6 @@ def bigger_then_equal_node(pattern_handler, data):
         error = 'The "bigger_then_equal" function can only be applied to a nummeric value.'
         raise ValueError(error)
     return data['node'] >= data['pattern']
-
 
 def smaller_then_node(pattern_handler, data):
     #pylint: disable=unused-argument
@@ -89,8 +93,6 @@ def smaller_then_equal_node(pattern_handler, data):
         raise ValueError(error)
     return data['node'] <= data['pattern']
 
-
-# Type Function
 def type_node(pattern_handler, data):
     #pylint: disable=unused-argument
     return type(data['node']) == data['pattern']

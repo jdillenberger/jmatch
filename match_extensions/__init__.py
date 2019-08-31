@@ -1,8 +1,13 @@
+from typing import Callable
 import inspect
 import match_extensions
 from match_extensions.basic import *
 
-def get(name):
+def get(name) -> Callable:
+    '''
+    Function: get
+    returns available package functions by name
+    '''
     member_functions = []
     for member in inspect.getmembers(match_extensions):
         funct = getattr(match_extensions, member[0])

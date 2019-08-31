@@ -3,11 +3,18 @@ import copy
 import match_extensions
 
 IMPOSSIBLE_VALUE = '_-NONE-_'
+
+# Represents tree-structures composed of various datatypes
 TreeType = Union[None, bool, int, float, str, list, dict]
 
 class Pattern:
+    '''
+    # Class: Pattern
+    Manages TreeType patterns and provides node|full-subtree|in-tree
+    matching for TreeType structures.
+    '''
 
-    def __init__(self, pattern: TreeType, function_prefix: str = '_'):
+    def __init__(self, pattern: TreeType, function_prefix: str = '_') -> None:
         self.function_prefix: str = function_prefix
         self.pattern: TreeType = pattern
         self._result: bool = False
@@ -16,7 +23,16 @@ class Pattern:
             'variables': {}
         }
 
-    def node_matches(self, node: TreeType, new_pattern: TreeType = IMPOSSIBLE_VALUE):
+    def node_matches(self, node: TreeType, new_pattern: TreeType = IMPOSSIBLE_VALUE) -> bool:
+        '''
+        # Method: node_matches
+        Checks if a node is matched by a pattern provided by
+        the new_pattern argument. The self.pattern is used as
+        default pattern, if no pattern is set via new_pattern.
+        node and pattern are typically given as a TreeType
+        structure, but this method ignores all child elements,
+        of the node and the pattern.
+        '''
 
         pattern: TreeType = self.pattern if new_pattern is IMPOSSIBLE_VALUE else new_pattern
 
@@ -25,10 +41,14 @@ class Pattern:
             and len(pattern) == 1 \
             and self.function_prefix in list(pattern.keys())[0]:
 
-            key: list = list(pattern.keys())[0]
+            # Get name of the fuction to call
+            key: str = list(pattern.keys())[0]
 
+            # Get function to call by its name
             extension: Union[Callable, None] = match_extensions.get('{0}_node'.format(key[1:]))
 
+            # If the function to call is not found, ignore the pattern-function
+            # and proceed with non-function matching.
             if callable(extension):
 
                 result = extension(self, {
@@ -40,7 +60,7 @@ class Pattern:
                 if result is not None:
                     return result
 
-        # Handle non function matching
+        # Type based node matching for dicts, lists and simple types
         if isinstance(node, dict):
             if isinstance(pattern, dict):
                 return set(pattern.keys()).intersection(set(node.keys())) == pattern.keys()
@@ -50,7 +70,14 @@ class Pattern:
         else:
             return type(node) == type(pattern) and node == pattern
 
-    def subtree_matches(self, subtree: TreeType, new_pattern: TreeType = IMPOSSIBLE_VALUE):
+
+    def subtree_matches(self, subtree: TreeType, new_pattern: TreeType = IMPOSSIBLE_VALUE) -> bool:
+        '''
+        # Method: subtree_matches
+        Checks if a subtree is matched by a pattern provided by
+        the new_pattern argument. The self.pattern is used as
+        default pattern, if no pattern is set via new_pattern.
+        '''
 
         pattern: TreeType = self.pattern if new_pattern is IMPOSSIBLE_VALUE else new_pattern
 
@@ -62,11 +89,16 @@ class Pattern:
             if isinstance(pattern, dict) \
                 and len(pattern) == 1 \
                 and self.function_prefix in list(pattern.keys())[0]:
+
+                # Get name of the fuction to call
                 key = list(pattern.keys())[0]
 
+                # Get function to call by its name
                 extension: Union[Callable, None] = match_extensions \
                                                         .get('{0}_subtree'.format(key[1:]))
 
+                # If the function to call is not found, ignore the pattern-function
+                # and proceed with non-function matching.
                 if callable(extension):
 
                     result: bool = extension(self, {
@@ -78,7 +110,7 @@ class Pattern:
                     if result in [True, False]:
                         return result
 
-            # Handle non function matching
+            # Type based node matching for dicts, lists and simple types
             if isinstance(subtree, dict) and isinstance(pattern, dict):
                 for key, child_pattern in pattern.items():
                     results.append((self.subtree_matches(subtree[key], child_pattern)))
@@ -97,24 +129,31 @@ class Pattern:
         else:
             return False
 
-    def matches(self, tree: TreeType, modifiers: dict = {}):
+    def matches(self, tree: TreeType, modifiers: dict = {}) -> bool:
+        '''
+        # Method: node_matches
+        Checks if a pattern is contained in a tree provided by
+        the new_pattern argument. The self.pattern is used as
+        default pattern, if no pattern is set via new_pattern.
+        '''
 
         if 'trace' not in modifiers.keys():
             modifiers['trace'] = []
 
+        # Pattern found, add node to the match traces, and return true.proceed
         if self.subtree_matches(tree):
             self._state['traces'].append(' > '.join(map(str, modifiers['trace'])))
             return (True, self._state)
 
         results: list = []
 
+        # If the pattern does not match, search child elements for a match of the pattern
         if isinstance(tree, dict):
             for key, element in tree.items():
                 new_modifiers = copy.deepcopy(modifiers)
                 new_modifiers['trace'].append('[{0}]'.format(key))
                 results.append(self.matches(element, new_modifiers)[0])
 
-        # LISTS
         elif isinstance(tree, list):
             for idx, element in enumerate(tree):
                 new_modifiers = copy.deepcopy(modifiers)
