@@ -144,12 +144,12 @@ def main():
                 message = ' ' * 4 + 'Pattern-file: \n      => "{0}"\n'
                 print(termcolor.colored(message.format(check['path'])))
 
-
             if args.trace:
                 print(termcolor.colored(' ' * 4 + 'Routes:'))
                 for trace in check['info']['traces']:
                     print(' ' * 6 + '=> ' + (trace if trace != '' else "[]"))
                 print()
+
     if args.stats:
 
         error_filter = lambda x: x['matches'] and x['{0}type'.format(args.prefix)] == 'error'
