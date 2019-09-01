@@ -1,7 +1,14 @@
+'''
+Loader for pattern functions.
+'''
+
 from typing import Callable
 import inspect
 import match_extensions
-from match_extensions.basic import *
+from match_extensions.general import *
+from match_extensions.string  import *
+from match_extensions.number  import *
+from match_extensions.tree    import *
 
 def get(name) -> Callable:
     '''
