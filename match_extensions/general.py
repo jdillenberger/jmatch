@@ -12,19 +12,9 @@ The functions defined here can match a pattern for various
 datatypes.
 '''
 
-def not_node(pattern_handler, data):
-    #pylint: disable=unused-argument
-    return True
-
-
 def not_subtree(pattern_handler, data):
     #pylint: disable=unused-argument
     return not pattern_handler.subtree_matches(data['subtree'], data['pattern'])
-
-
-def or_node(pattern_handler, data):
-    #pylint: disable=unused-argument
-    return True
 
 
 def or_subtree(pattern_handler, data):
@@ -35,11 +25,6 @@ def or_subtree(pattern_handler, data):
     for pattern in data['pattern']:
         result.append(pattern_handler.subtree_matches(data['subtree'], pattern))
     return any(result)
-
-
-def and_node(pattern_handler, data):
-    #pylint: disable=unused-argument
-    return True
 
 
 def and_subtree(pattern_handler, data):
@@ -56,8 +41,6 @@ def type_node(pattern_handler, data):
     #pylint: disable=unused-argument
     return type(data['node']) == data['pattern']
 
-def copy_node(pattern_handler, data):
-    return True
 
 def copy_subtree(pattern_handler, data):
     # ToDo: Implement function copy_subtree
