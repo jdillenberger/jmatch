@@ -41,6 +41,24 @@ def type_node(pattern_handler, data):
     #pylint: disable=unused-argument
     return type(data['node']) == data['pattern']
 
+def type_node(pattern_handler, data):
+    if data['pattern'] in ["string", "str"]:
+        return isinstance(data['node'], str)
+    elif data['pattern'] in ["integer", "int"]:
+        return isinstance(data['node'], int)
+    elif data['pattern'] in ["float"]:
+        return isinstance(data['node'], float)
+    elif data['pattern'] in ["list", "array"]:
+        return isinstance(data['node'], list)
+    elif data['pattern'] in ["dict", "object"]:
+        return isinstance(data ['node'], dict)
+    elif data['pattern'] in ["value"]:
+        return not (isinstance(data['node'], list) or isinstance(data['node'], dict))
+    elif data['pattern'] in ["anything"]:
+        return True
+    else:
+        return False
+
 
 def copy_subtree(pattern_handler, data):
     # ToDo: Implement function copy_subtree
